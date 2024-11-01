@@ -19,7 +19,7 @@
         "notificationArns": [],
         "assumeRoleArn": "arn:${AWS::Partition}:iam::061039788815:role/cdk-hnb659fds-deploy-role-061039788815-ap-south-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::061039788815:role/cdk-hnb659fds-cfn-exec-role-061039788815-ap-south-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-061039788815-ap-south-1/b981d59a8e0383df8805f5ea2eba2e5303ea3984b5ec25f24e5f6c56e206b069.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-061039788815-ap-south-1/97e9b61d7adf7b917f5b7f321df2f0b5b3c16aed833496782f5126f0f32e2dfb.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -68,7 +68,7 @@
         "/CdkStack/MyApi/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MyApiDeploymentECB0D05Ed3d3b9436c36faee8331a8ef01c9a441"
+            "data": "MyApiDeploymentECB0D05E06131526962d507d3e8ca834ccbca09d"
           }
         ],
         "/CdkStack/MyApi/DeploymentStage.prod/Resource": [
@@ -81,54 +81,6 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "MyApiEndpoint869ABE96"
-          }
-        ],
-        "/CdkStack/MyApi/Default/admin/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApiadmin73EB0011"
-          }
-        ],
-        "/CdkStack/MyApi/Default/admin/POST/ApiPermission.CdkStackMyApi87BB8022.POST..admin": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApiadminPOSTApiPermissionCdkStackMyApi87BB8022POSTadminF55A2E24"
-          }
-        ],
-        "/CdkStack/MyApi/Default/admin/POST/ApiPermission.Test.CdkStackMyApi87BB8022.POST..admin": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApiadminPOSTApiPermissionTestCdkStackMyApi87BB8022POSTadminC24FC9F8"
-          }
-        ],
-        "/CdkStack/MyApi/Default/admin/POST/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApiadminPOSTF1F9890A"
-          }
-        ],
-        "/CdkStack/MyApi/Default/customer/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApicustomer5762A215"
-          }
-        ],
-        "/CdkStack/MyApi/Default/customer/POST/ApiPermission.CdkStackMyApi87BB8022.POST..customer": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApicustomerPOSTApiPermissionCdkStackMyApi87BB8022POSTcustomer9C9EAA49"
-          }
-        ],
-        "/CdkStack/MyApi/Default/customer/POST/ApiPermission.Test.CdkStackMyApi87BB8022.POST..customer": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApicustomerPOSTApiPermissionTestCdkStackMyApi87BB8022POSTcustomerD23CF170"
-          }
-        ],
-        "/CdkStack/MyApi/Default/customer/POST/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "MyApicustomerPOST4FB77138"
           }
         ],
         "/CdkStack/MyApi/Default/user/Resource": [
@@ -153,6 +105,12 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "MyApiuserPOST55E582BC"
+          }
+        ],
+        "/CdkStack/UserPoolAuthorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolAuthorizer2F68B0CA"
           }
         ],
         "/CdkStack/UserPoolId": [

@@ -1,4 +1,3 @@
-// lib/cdk-stack.ts
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';  // Update to use the constructs package
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -11,8 +10,9 @@ export class MyCdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+
     const userPool = new cognito.UserPool(this, 'MyUserPool', {
-      userPoolName: 'myUserPool',
+      userPoolName: process.env.USER_POOL_NAME || 'javaUserPool',
       selfSignUpEnabled: true,
       signInAliases: { email: true },
     });
@@ -21,10 +21,15 @@ export class MyCdkStack extends cdk.Stack {
       generateSecret: false,
     });
 
+
     const myLambda = new lambda.Function(this, 'MyLambdaFunction', {
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'lambda.function.handler',
-      code: lambda.Code.fromAsset('./src/lambda'),
+      handler: 'function.handler',
+      code: lambda.Code.fromAsset('./dist/src/lambda'), // Adjust this path as needed
+      environment: {
+        USER_POOL_ID: userPool.userPoolId,
+        USER_POOL_CLIENT_ID: userPoolClient.userPoolClientId,
+      },
     });
 
 
@@ -33,10 +38,14 @@ export class MyCdkStack extends cdk.Stack {
       proxy: false,
     });
 
-;
 
     const user = api.root.addResource('user');
-    user.addMethod('POST');
+    user.addMethod('POST', new apigateway.LambdaIntegration(myLambda), {
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      authorizer: new apigateway.CognitoUserPoolsAuthorizer(this, 'UserPoolAuthorizer', {
+        cognitoUserPools: [userPool],
+      }),
+    });
 
 
     new cdk.CfnOutput(this, 'UserPoolId', {

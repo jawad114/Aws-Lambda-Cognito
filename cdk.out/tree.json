@@ -42,7 +42,7 @@
                     "usernameAttributes": [
                       "email"
                     ],
-                    "userPoolName": "myUserPool",
+                    "userPoolName": "javaUserPool",
                     "verificationMessageTemplate": {
                       "defaultEmailOption": "CONFIRM_WITH_CODE",
                       "emailMessage": "The verification code to your new account is {####}",
@@ -202,9 +202,19 @@
                   "aws:cdk:cloudformation:props": {
                     "code": {
                       "s3Bucket": "cdk-hnb659fds-assets-061039788815-ap-south-1",
-                      "s3Key": "3ea0412d9643e6154ac510967c70debc5b06366ab26764155f215f92e64ead48.zip"
+                      "s3Key": "4dbf7e4a13bfcbd03044ce95766c56d31a68c0bf08949f053befe2bdbb98f837.zip"
                     },
-                    "handler": "lambda.function.handler",
+                    "environment": {
+                      "variables": {
+                        "USER_POOL_ID": {
+                          "Ref": "MyUserPoolD09D1D74"
+                        },
+                        "USER_POOL_CLIENT_ID": {
+                          "Ref": "MyUserPoolUserPoolClient80A77DCD"
+                        }
+                      }
+                    },
+                    "handler": "function.handler",
                     "role": {
                       "Fn::GetAtt": [
                         "MyLambdaFunctionServiceRole313A4D46",
@@ -281,7 +291,7 @@
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
                       "aws:cdk:cloudformation:props": {
                         "deploymentId": {
-                          "Ref": "MyApiDeploymentECB0D05Ed3d3b9436c36faee8331a8ef01c9a441"
+                          "Ref": "MyApiDeploymentECB0D05E06131526962d507d3e8ca834ccbca09d"
                         },
                         "restApiId": {
                           "Ref": "MyApi49610EDF"
@@ -312,312 +322,6 @@
                 "id": "Default",
                 "path": "CdkStack/MyApi/Default",
                 "children": {
-                  "admin": {
-                    "id": "admin",
-                    "path": "CdkStack/MyApi/Default/admin",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "CdkStack/MyApi/Default/admin/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
-                          "aws:cdk:cloudformation:props": {
-                            "parentId": {
-                              "Fn::GetAtt": [
-                                "MyApi49610EDF",
-                                "RootResourceId"
-                              ]
-                            },
-                            "pathPart": "admin",
-                            "restApiId": {
-                              "Ref": "MyApi49610EDF"
-                            }
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
-                          "version": "2.164.1"
-                        }
-                      },
-                      "POST": {
-                        "id": "POST",
-                        "path": "CdkStack/MyApi/Default/admin/POST",
-                        "children": {
-                          "ApiPermission.CdkStackMyApi87BB8022.POST..admin": {
-                            "id": "ApiPermission.CdkStackMyApi87BB8022.POST..admin",
-                            "path": "CdkStack/MyApi/Default/admin/POST/ApiPermission.CdkStackMyApi87BB8022.POST..admin",
-                            "attributes": {
-                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
-                              "aws:cdk:cloudformation:props": {
-                                "action": "lambda:InvokeFunction",
-                                "functionName": {
-                                  "Fn::GetAtt": [
-                                    "MyLambdaFunction67CCA873",
-                                    "Arn"
-                                  ]
-                                },
-                                "principal": "apigateway.amazonaws.com",
-                                "sourceArn": {
-                                  "Fn::Join": [
-                                    "",
-                                    [
-                                      "arn:aws:execute-api:ap-south-1:061039788815:",
-                                      {
-                                        "Ref": "MyApi49610EDF"
-                                      },
-                                      "/",
-                                      {
-                                        "Ref": "MyApiDeploymentStageprodE1054AF0"
-                                      },
-                                      "/POST/admin"
-                                    ]
-                                  ]
-                                }
-                              }
-                            },
-                            "constructInfo": {
-                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.164.1"
-                            }
-                          },
-                          "ApiPermission.Test.CdkStackMyApi87BB8022.POST..admin": {
-                            "id": "ApiPermission.Test.CdkStackMyApi87BB8022.POST..admin",
-                            "path": "CdkStack/MyApi/Default/admin/POST/ApiPermission.Test.CdkStackMyApi87BB8022.POST..admin",
-                            "attributes": {
-                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
-                              "aws:cdk:cloudformation:props": {
-                                "action": "lambda:InvokeFunction",
-                                "functionName": {
-                                  "Fn::GetAtt": [
-                                    "MyLambdaFunction67CCA873",
-                                    "Arn"
-                                  ]
-                                },
-                                "principal": "apigateway.amazonaws.com",
-                                "sourceArn": {
-                                  "Fn::Join": [
-                                    "",
-                                    [
-                                      "arn:aws:execute-api:ap-south-1:061039788815:",
-                                      {
-                                        "Ref": "MyApi49610EDF"
-                                      },
-                                      "/test-invoke-stage/POST/admin"
-                                    ]
-                                  ]
-                                }
-                              }
-                            },
-                            "constructInfo": {
-                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.164.1"
-                            }
-                          },
-                          "Resource": {
-                            "id": "Resource",
-                            "path": "CdkStack/MyApi/Default/admin/POST/Resource",
-                            "attributes": {
-                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
-                              "aws:cdk:cloudformation:props": {
-                                "authorizationType": "NONE",
-                                "httpMethod": "POST",
-                                "integration": {
-                                  "type": "AWS_PROXY",
-                                  "uri": {
-                                    "Fn::Join": [
-                                      "",
-                                      [
-                                        "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/",
-                                        {
-                                          "Fn::GetAtt": [
-                                            "MyLambdaFunction67CCA873",
-                                            "Arn"
-                                          ]
-                                        },
-                                        "/invocations"
-                                      ]
-                                    ]
-                                  },
-                                  "integrationHttpMethod": "POST"
-                                },
-                                "resourceId": {
-                                  "Ref": "MyApiadmin73EB0011"
-                                },
-                                "restApiId": {
-                                  "Ref": "MyApi49610EDF"
-                                }
-                              }
-                            },
-                            "constructInfo": {
-                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                              "version": "2.164.1"
-                            }
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                          "version": "2.164.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
-                      "version": "2.164.1"
-                    }
-                  },
-                  "customer": {
-                    "id": "customer",
-                    "path": "CdkStack/MyApi/Default/customer",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "CdkStack/MyApi/Default/customer/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
-                          "aws:cdk:cloudformation:props": {
-                            "parentId": {
-                              "Fn::GetAtt": [
-                                "MyApi49610EDF",
-                                "RootResourceId"
-                              ]
-                            },
-                            "pathPart": "customer",
-                            "restApiId": {
-                              "Ref": "MyApi49610EDF"
-                            }
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
-                          "version": "2.164.1"
-                        }
-                      },
-                      "POST": {
-                        "id": "POST",
-                        "path": "CdkStack/MyApi/Default/customer/POST",
-                        "children": {
-                          "ApiPermission.CdkStackMyApi87BB8022.POST..customer": {
-                            "id": "ApiPermission.CdkStackMyApi87BB8022.POST..customer",
-                            "path": "CdkStack/MyApi/Default/customer/POST/ApiPermission.CdkStackMyApi87BB8022.POST..customer",
-                            "attributes": {
-                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
-                              "aws:cdk:cloudformation:props": {
-                                "action": "lambda:InvokeFunction",
-                                "functionName": {
-                                  "Fn::GetAtt": [
-                                    "MyLambdaFunction67CCA873",
-                                    "Arn"
-                                  ]
-                                },
-                                "principal": "apigateway.amazonaws.com",
-                                "sourceArn": {
-                                  "Fn::Join": [
-                                    "",
-                                    [
-                                      "arn:aws:execute-api:ap-south-1:061039788815:",
-                                      {
-                                        "Ref": "MyApi49610EDF"
-                                      },
-                                      "/",
-                                      {
-                                        "Ref": "MyApiDeploymentStageprodE1054AF0"
-                                      },
-                                      "/POST/customer"
-                                    ]
-                                  ]
-                                }
-                              }
-                            },
-                            "constructInfo": {
-                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.164.1"
-                            }
-                          },
-                          "ApiPermission.Test.CdkStackMyApi87BB8022.POST..customer": {
-                            "id": "ApiPermission.Test.CdkStackMyApi87BB8022.POST..customer",
-                            "path": "CdkStack/MyApi/Default/customer/POST/ApiPermission.Test.CdkStackMyApi87BB8022.POST..customer",
-                            "attributes": {
-                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
-                              "aws:cdk:cloudformation:props": {
-                                "action": "lambda:InvokeFunction",
-                                "functionName": {
-                                  "Fn::GetAtt": [
-                                    "MyLambdaFunction67CCA873",
-                                    "Arn"
-                                  ]
-                                },
-                                "principal": "apigateway.amazonaws.com",
-                                "sourceArn": {
-                                  "Fn::Join": [
-                                    "",
-                                    [
-                                      "arn:aws:execute-api:ap-south-1:061039788815:",
-                                      {
-                                        "Ref": "MyApi49610EDF"
-                                      },
-                                      "/test-invoke-stage/POST/customer"
-                                    ]
-                                  ]
-                                }
-                              }
-                            },
-                            "constructInfo": {
-                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
-                              "version": "2.164.1"
-                            }
-                          },
-                          "Resource": {
-                            "id": "Resource",
-                            "path": "CdkStack/MyApi/Default/customer/POST/Resource",
-                            "attributes": {
-                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
-                              "aws:cdk:cloudformation:props": {
-                                "authorizationType": "NONE",
-                                "httpMethod": "POST",
-                                "integration": {
-                                  "type": "AWS_PROXY",
-                                  "uri": {
-                                    "Fn::Join": [
-                                      "",
-                                      [
-                                        "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/",
-                                        {
-                                          "Fn::GetAtt": [
-                                            "MyLambdaFunction67CCA873",
-                                            "Arn"
-                                          ]
-                                        },
-                                        "/invocations"
-                                      ]
-                                    ]
-                                  },
-                                  "integrationHttpMethod": "POST"
-                                },
-                                "resourceId": {
-                                  "Ref": "MyApicustomer5762A215"
-                                },
-                                "restApiId": {
-                                  "Ref": "MyApi49610EDF"
-                                }
-                              }
-                            },
-                            "constructInfo": {
-                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
-                              "version": "2.164.1"
-                            }
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
-                          "version": "2.164.1"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
-                      "version": "2.164.1"
-                    }
-                  },
                   "user": {
                     "id": "user",
                     "path": "CdkStack/MyApi/Default/user",
@@ -725,7 +429,10 @@
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                               "aws:cdk:cloudformation:props": {
-                                "authorizationType": "NONE",
+                                "authorizationType": "COGNITO_USER_POOLS",
+                                "authorizerId": {
+                                  "Ref": "UserPoolAuthorizer2F68B0CA"
+                                },
                                 "httpMethod": "POST",
                                 "integration": {
                                   "type": "AWS_PROXY",
@@ -780,6 +487,43 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_apigateway.LambdaRestApi",
+              "version": "2.164.1"
+            }
+          },
+          "UserPoolAuthorizer": {
+            "id": "UserPoolAuthorizer",
+            "path": "CdkStack/UserPoolAuthorizer",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkStack/UserPoolAuthorizer/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Authorizer",
+                  "aws:cdk:cloudformation:props": {
+                    "identitySource": "method.request.header.Authorization",
+                    "name": "CdkStackUserPoolAuthorizer7952D0A3",
+                    "providerArns": [
+                      {
+                        "Fn::GetAtt": [
+                          "MyUserPoolD09D1D74",
+                          "Arn"
+                        ]
+                      }
+                    ],
+                    "restApiId": {
+                      "Ref": "MyApi49610EDF"
+                    },
+                    "type": "COGNITO_USER_POOLS"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnAuthorizer",
+                  "version": "2.164.1"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.CognitoUserPoolsAuthorizer",
               "version": "2.164.1"
             }
           },

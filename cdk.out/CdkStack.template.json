@@ -24,7 +24,7 @@
     "EmailVerificationMessage": "The verification code to your new account is {####}",
     "EmailVerificationSubject": "Verify your new account",
     "SmsVerificationMessage": "The verification code to your new account is {####}",
-    "UserPoolName": "myUserPool",
+    "UserPoolName": "javaUserPool",
     "UsernameAttributes": [
      "email"
     ],
@@ -110,9 +110,19 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-061039788815-ap-south-1",
-     "S3Key": "3ea0412d9643e6154ac510967c70debc5b06366ab26764155f215f92e64ead48.zip"
+     "S3Key": "4dbf7e4a13bfcbd03044ce95766c56d31a68c0bf08949f053befe2bdbb98f837.zip"
     },
-    "Handler": "lambda.function.handler",
+    "Environment": {
+     "Variables": {
+      "USER_POOL_ID": {
+       "Ref": "MyUserPoolD09D1D74"
+      },
+      "USER_POOL_CLIENT_ID": {
+       "Ref": "MyUserPoolUserPoolClient80A77DCD"
+      }
+     }
+    },
+    "Handler": "function.handler",
     "Role": {
      "Fn::GetAtt": [
       "MyLambdaFunctionServiceRole313A4D46",
@@ -126,7 +136,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "CdkStack/MyLambdaFunction/Resource",
-    "aws:asset:path": "asset.3ea0412d9643e6154ac510967c70debc5b06366ab26764155f215f92e64ead48",
+    "aws:asset:path": "asset.4dbf7e4a13bfcbd03044ce95766c56d31a68c0bf08949f053befe2bdbb98f837",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -140,7 +150,7 @@
     "aws:cdk:path": "CdkStack/MyApi/Resource"
    }
   },
-  "MyApiDeploymentECB0D05Ed3d3b9436c36faee8331a8ef01c9a441": {
+  "MyApiDeploymentECB0D05E06131526962d507d3e8ca834ccbca09d": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -149,12 +159,9 @@
     }
    },
    "DependsOn": [
-    "MyApiadminPOSTF1F9890A",
-    "MyApiadmin73EB0011",
-    "MyApicustomerPOST4FB77138",
-    "MyApicustomer5762A215",
     "MyApiuserPOST55E582BC",
-    "MyApiuserA1628046"
+    "MyApiuserA1628046",
+    "UserPoolAuthorizer2F68B0CA"
    ],
    "Metadata": {
     "aws:cdk:path": "CdkStack/MyApi/Deployment/Resource"
@@ -164,7 +171,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "MyApiDeploymentECB0D05Ed3d3b9436c36faee8331a8ef01c9a441"
+     "Ref": "MyApiDeploymentECB0D05E06131526962d507d3e8ca834ccbca09d"
     },
     "RestApiId": {
      "Ref": "MyApi49610EDF"
@@ -173,232 +180,6 @@
    },
    "Metadata": {
     "aws:cdk:path": "CdkStack/MyApi/DeploymentStage.prod/Resource"
-   }
-  },
-  "MyApiadmin73EB0011": {
-   "Type": "AWS::ApiGateway::Resource",
-   "Properties": {
-    "ParentId": {
-     "Fn::GetAtt": [
-      "MyApi49610EDF",
-      "RootResourceId"
-     ]
-    },
-    "PathPart": "admin",
-    "RestApiId": {
-     "Ref": "MyApi49610EDF"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/admin/Resource"
-   }
-  },
-  "MyApiadminPOSTApiPermissionCdkStackMyApi87BB8022POSTadminF55A2E24": {
-   "Type": "AWS::Lambda::Permission",
-   "Properties": {
-    "Action": "lambda:InvokeFunction",
-    "FunctionName": {
-     "Fn::GetAtt": [
-      "MyLambdaFunction67CCA873",
-      "Arn"
-     ]
-    },
-    "Principal": "apigateway.amazonaws.com",
-    "SourceArn": {
-     "Fn::Join": [
-      "",
-      [
-       "arn:aws:execute-api:ap-south-1:061039788815:",
-       {
-        "Ref": "MyApi49610EDF"
-       },
-       "/",
-       {
-        "Ref": "MyApiDeploymentStageprodE1054AF0"
-       },
-       "/POST/admin"
-      ]
-     ]
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/admin/POST/ApiPermission.CdkStackMyApi87BB8022.POST..admin"
-   }
-  },
-  "MyApiadminPOSTApiPermissionTestCdkStackMyApi87BB8022POSTadminC24FC9F8": {
-   "Type": "AWS::Lambda::Permission",
-   "Properties": {
-    "Action": "lambda:InvokeFunction",
-    "FunctionName": {
-     "Fn::GetAtt": [
-      "MyLambdaFunction67CCA873",
-      "Arn"
-     ]
-    },
-    "Principal": "apigateway.amazonaws.com",
-    "SourceArn": {
-     "Fn::Join": [
-      "",
-      [
-       "arn:aws:execute-api:ap-south-1:061039788815:",
-       {
-        "Ref": "MyApi49610EDF"
-       },
-       "/test-invoke-stage/POST/admin"
-      ]
-     ]
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/admin/POST/ApiPermission.Test.CdkStackMyApi87BB8022.POST..admin"
-   }
-  },
-  "MyApiadminPOSTF1F9890A": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "AuthorizationType": "NONE",
-    "HttpMethod": "POST",
-    "Integration": {
-     "IntegrationHttpMethod": "POST",
-     "Type": "AWS_PROXY",
-     "Uri": {
-      "Fn::Join": [
-       "",
-       [
-        "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/",
-        {
-         "Fn::GetAtt": [
-          "MyLambdaFunction67CCA873",
-          "Arn"
-         ]
-        },
-        "/invocations"
-       ]
-      ]
-     }
-    },
-    "ResourceId": {
-     "Ref": "MyApiadmin73EB0011"
-    },
-    "RestApiId": {
-     "Ref": "MyApi49610EDF"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/admin/POST/Resource"
-   }
-  },
-  "MyApicustomer5762A215": {
-   "Type": "AWS::ApiGateway::Resource",
-   "Properties": {
-    "ParentId": {
-     "Fn::GetAtt": [
-      "MyApi49610EDF",
-      "RootResourceId"
-     ]
-    },
-    "PathPart": "customer",
-    "RestApiId": {
-     "Ref": "MyApi49610EDF"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/customer/Resource"
-   }
-  },
-  "MyApicustomerPOSTApiPermissionCdkStackMyApi87BB8022POSTcustomer9C9EAA49": {
-   "Type": "AWS::Lambda::Permission",
-   "Properties": {
-    "Action": "lambda:InvokeFunction",
-    "FunctionName": {
-     "Fn::GetAtt": [
-      "MyLambdaFunction67CCA873",
-      "Arn"
-     ]
-    },
-    "Principal": "apigateway.amazonaws.com",
-    "SourceArn": {
-     "Fn::Join": [
-      "",
-      [
-       "arn:aws:execute-api:ap-south-1:061039788815:",
-       {
-        "Ref": "MyApi49610EDF"
-       },
-       "/",
-       {
-        "Ref": "MyApiDeploymentStageprodE1054AF0"
-       },
-       "/POST/customer"
-      ]
-     ]
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/customer/POST/ApiPermission.CdkStackMyApi87BB8022.POST..customer"
-   }
-  },
-  "MyApicustomerPOSTApiPermissionTestCdkStackMyApi87BB8022POSTcustomerD23CF170": {
-   "Type": "AWS::Lambda::Permission",
-   "Properties": {
-    "Action": "lambda:InvokeFunction",
-    "FunctionName": {
-     "Fn::GetAtt": [
-      "MyLambdaFunction67CCA873",
-      "Arn"
-     ]
-    },
-    "Principal": "apigateway.amazonaws.com",
-    "SourceArn": {
-     "Fn::Join": [
-      "",
-      [
-       "arn:aws:execute-api:ap-south-1:061039788815:",
-       {
-        "Ref": "MyApi49610EDF"
-       },
-       "/test-invoke-stage/POST/customer"
-      ]
-     ]
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/customer/POST/ApiPermission.Test.CdkStackMyApi87BB8022.POST..customer"
-   }
-  },
-  "MyApicustomerPOST4FB77138": {
-   "Type": "AWS::ApiGateway::Method",
-   "Properties": {
-    "AuthorizationType": "NONE",
-    "HttpMethod": "POST",
-    "Integration": {
-     "IntegrationHttpMethod": "POST",
-     "Type": "AWS_PROXY",
-     "Uri": {
-      "Fn::Join": [
-       "",
-       [
-        "arn:aws:apigateway:ap-south-1:lambda:path/2015-03-31/functions/",
-        {
-         "Fn::GetAtt": [
-          "MyLambdaFunction67CCA873",
-          "Arn"
-         ]
-        },
-        "/invocations"
-       ]
-      ]
-     }
-    },
-    "ResourceId": {
-     "Ref": "MyApicustomer5762A215"
-    },
-    "RestApiId": {
-     "Ref": "MyApi49610EDF"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "CdkStack/MyApi/Default/customer/POST/Resource"
    }
   },
   "MyApiuserA1628046": {
@@ -482,7 +263,10 @@
   "MyApiuserPOST55E582BC": {
    "Type": "AWS::ApiGateway::Method",
    "Properties": {
-    "AuthorizationType": "NONE",
+    "AuthorizationType": "COGNITO_USER_POOLS",
+    "AuthorizerId": {
+     "Ref": "UserPoolAuthorizer2F68B0CA"
+    },
     "HttpMethod": "POST",
     "Integration": {
      "IntegrationHttpMethod": "POST",
@@ -514,10 +298,32 @@
     "aws:cdk:path": "CdkStack/MyApi/Default/user/POST/Resource"
    }
   },
+  "UserPoolAuthorizer2F68B0CA": {
+   "Type": "AWS::ApiGateway::Authorizer",
+   "Properties": {
+    "IdentitySource": "method.request.header.Authorization",
+    "Name": "CdkStackUserPoolAuthorizer7952D0A3",
+    "ProviderARNs": [
+     {
+      "Fn::GetAtt": [
+       "MyUserPoolD09D1D74",
+       "Arn"
+      ]
+     }
+    ],
+    "RestApiId": {
+     "Ref": "MyApi49610EDF"
+    },
+    "Type": "COGNITO_USER_POOLS"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkStack/UserPoolAuthorizer/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02OQU/DMAyFf8vuqVk3BOdtiBOIqRPnKWtN8ZomVe1QTVH+O0rbQU/vs/387A3kT4+Qr/TAWVk1maELhJPoslF64HMoXW1JHIRPxv7onFGHL/vHdzgYQivL0dSJyuj2UmkIr96WQs4mz5KP2LfETM5GRbqFUDiDaZA0Kt6eNTMKwy6J4i3sfdmg7DWj0h3VWnDQNwhv46ECWXYdjQEzvmBn3K2d/1tUJ9H1eGqCAtn5vsQx+V7MQRO/o3y7KrUmivHfN76XgsjWyfHhpfOyXI/Kugrhyg8/mzXkz7BeXZko670VahGKSX8B4yWHC5EBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02Qy26DMBBFvyV7Mw1J1a5Joq5aNSLqOnJgSiaAjZhxUYr875V5NKzumYfu9XgD8cszxCvdcZTlZVTRBfqT6KxUuuNzn9nCkFjovxjbo7WV2n+bf55hXxEaWY7GjleVri+5hv7NmUzImrCz5CO2NTGTNV6RrqFPbYVhENQr3p41MwpDEkTxFnYuK1F2mlHphgot2Ok79O9DUIosSUODwYQHbCp7r6f3LaqT6GKIGiFFtq7NcHCei8lo5A+Uq81Da6bxc+abOXFytS39YhuWHpX3D8PhjpBIpghbn04aJ8scr4zNEW789LNZQ/wK69WNiaLWGaEaIR31D4v1RWu6AQAA"
    },
    "Metadata": {
     "aws:cdk:path": "CdkStack/CDKMetadata/Default"
